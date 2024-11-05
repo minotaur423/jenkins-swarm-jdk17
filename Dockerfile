@@ -15,7 +15,8 @@ RUN apt-get install -qqy openjfx curl wget gnupg2
 VOLUME /var/jenkins_home
 
 # Set up Jenkins users and directories
-RUN /usr/sbin/groupadd -g 1000 jenkins && /usr/sbin/useradd -d /var/jenkins_home -u 1000 -g 1000 jenkins
+RUN /usr/sbin/groupadd -g 1000 jenkins && /usr/sbin/groupadd -g 988 docker && \
+    /usr/sbin/useradd -d /var/jenkins_home -u 1000 -g 1000 -G docker jenkins
 ENV JENKINS_HOME=/var/jenkins_home
 
 # Install and configure Jenkins Swarm Client
