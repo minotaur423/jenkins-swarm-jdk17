@@ -41,6 +41,8 @@ spec:
                   key: password
                   name: jenkins-creds
                   optional: false
+            - name: SWARM_EXECUTORS
+              value: '2'
           image: artifactoryu.harvey.lcl/docker/jenkins-swarm-jdk17:main.a919844
           imagePullPolicy: Always
           name: jenkins-swarm-17
