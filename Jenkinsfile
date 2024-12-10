@@ -5,14 +5,13 @@ pipeline {
     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '30', numToKeepStr: '10')
   }
   environment {
-    project = 'jenkins-swarm-jdk17'
+    project = 'jenkins-swarm-jdk17-buildah'
     tag = 'default'
     commitNum = 'default'
   }
   stages{
     stage('Preparation') {
       steps {
-        sh "docker system prune -af"
         echo "STARTED:\nJob '${env.JOB_NAME} [${env.BUILD_NUMBER}]'\n(${env.BUILD_URL})"
         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-creds', url: 'https://github.com/minotaur423/jenkins-swarm-jdk17.git']])
         script {
@@ -25,21 +24,21 @@ pipeline {
         }
       }
     }
-    stage('Build Docker') {
+    stage('Build Image') {
       steps {
           timeout(10) {
             withCredentials([usernamePassword(credentialsId: 'docker_cred', passwordVariable: 'ARTIFACTORY_DOCKER_PWD', usernameVariable: 'ARTIFACTORY_DOCKER_USER')]) {
-              sh 'echo ${ARTIFACTORY_DOCKER_PWD} | docker login -u ${ARTIFACTORY_DOCKER_USER} --password-stdin ${ARTIFACTORY_DOCKER_SERVER}'
+              sh 'echo ${ARTIFACTORY_DOCKER_PWD} | buildah login -u ${ARTIFACTORY_DOCKER_USER} --password-stdin ${ARTIFACTORY_DOCKER_SERVER}'
             }
-            sh "docker build --pull --no-cache -t ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}.${commitNum} ."
-            sh "docker build -t ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}-latest ."
+            sh "buildah build --pull --no-cache -t ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}.${commitNum} ."
+            sh "buildah build -t ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}-latest ."
           }
       }
     }
-    stage('Push Docker') {
+    stage('Push Image') {
       steps {
-          sh "docker push ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}.${commitNum}"
-          sh "docker push ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}-latest"
+          sh "buildah push ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}.${commitNum}"
+          sh "buildah push ${ARTIFACTORY_DOCKER_SERVER}/docker/${project}:${tag}-latest"
       }
     }
   }
@@ -47,7 +46,7 @@ pipeline {
     always {
       script {
         tag = "${tag}"
-        sh "docker logout"
+        sh "buildah logout"
       }
     }
     success {
