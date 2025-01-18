@@ -43,8 +43,8 @@ spec:
                   optional: false
             - name: SWARM_EXECUTORS
               value: '2'
-#         image: artifactoryu.harvey.lcl/docker/jenkins-swarm-jdk17:main.a919844
-          image: minotaur423/jenkins-swarm-17-v3.47:v1
+          image: artifactory.home.lcl/docker-local/jenkins-swarm-jdk17:main.4b28e6b
+#         image: minotaur423/jenkins-swarm-17-v3.47:v1
           imagePullPolicy: Always
           name: jenkins-swarm-17
           resources: {}
@@ -62,6 +62,8 @@ spec:
               name: docker-socket
               readOnly: true
       dnsPolicy: ClusterFirst
+      imagePullSecrets:
+        - name: reg-creds
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
