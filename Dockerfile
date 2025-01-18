@@ -29,8 +29,8 @@ RUN chmod 644 /usr/share/jenkins/swarm-client-${SWARM_CLIENT_VERSION}.jar
 # Install Node Version Manager (NVM), Node version 10.6.13 LTS and latest
 ENV NVM_DIR=/usr/local/nvm
 RUN mkdir $NVM_DIR
-ENV NODE_VERSION=v16.14
-RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+ENV NODE_VERSION=v18.20.5
+RUN curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
 RUN source $NVM_DIR/nvm.sh \
   && nvm install $NODE_VERSION \

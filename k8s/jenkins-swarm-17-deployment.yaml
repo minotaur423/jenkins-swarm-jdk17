@@ -43,7 +43,8 @@ spec:
                   optional: false
             - name: SWARM_EXECUTORS
               value: '2'
-          image: artifactoryu.harvey.lcl/docker/jenkins-swarm-jdk17:main.a919844
+#         image: artifactoryu.harvey.lcl/docker/jenkins-swarm-jdk17:main.a919844
+          image: minotaur423/jenkins-swarm-17-v3.47:v1
           imagePullPolicy: Always
           name: jenkins-swarm-17
           resources: {}
