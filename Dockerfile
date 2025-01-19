@@ -22,11 +22,11 @@ ENV JENKINS_HOME=/var/jenkins_home
 # Install and configure Jenkins Swarm Client
 COPY ./run.sh /run.sh
 RUN chmod +x /run.sh
-ENV SWARM_CLIENT_VERSION=3.48
+ENV SWARM_CLIENT_VERSION=3.49
 ADD https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_CLIENT_VERSION}/swarm-client-${SWARM_CLIENT_VERSION}.jar /usr/share/jenkins/swarm-client-${SWARM_CLIENT_VERSION}.jar
 RUN chmod 644 /usr/share/jenkins/swarm-client-${SWARM_CLIENT_VERSION}.jar
 
-# Install Node Version Manager (NVM), Node version 10.6.13 LTS and latest
+# Install Node Version Manager (NVM), Node version 18.20.5 LTS and latest
 ENV NVM_DIR=/usr/local/nvm
 RUN mkdir $NVM_DIR
 ENV NODE_VERSION=v18.20.5
