@@ -1,2 +1,2 @@
 docker build -t jenkins-swarm-jdk17:v3.49 .
-docker run -itd --name=swarm-jdk17 --network=my-net -v jenkins:/var/jenkins_home -h swarm-jdk17 -e JENKINS_HOST=jenkins -e JENKINS_PORT=8080 -e JENKINS_USERNAME=jenkins -e JENKINS_PASSWORD='password' -e SWARM_EXECUTORS=2 jenkins-swarm-jdk17:v3.49
+docker run -itd --name=swarm-jdk17 --network=my-net -v jenkins:/var/jenkins_home --volume /run/docker.sock:/var/run/docker.sock -h swarm-jdk17 -e JENKINS_HOST=jenkins -e JENKINS_PORT=8080 -e JENKINS_USERNAME=jenkins -e JENKINS_PASSWORD='password' -e SWARM_EXECUTORS=2 jenkins-swarm-jdk17:v3.49
